@@ -1,0 +1,96 @@
+<center>
+  <h1>計算機（仮）</h1>
+</center>
+
+<script language="javascript">
+ans = 0;
+num = "";
+key = "";
+kigou = "";
+
+function calc_run(btn) {     //-- 計算処理関数  
+	if (!isNaN(btn)) {           // 数字の計算処理
+		if (kigou == "=") {　　　　　　// 「=」を押したあとでも継続的に計算する処理
+			ans = 0;
+			kigou = "";
+		}
+		if (!isNaN(key)) {　　　　　// 連続して数字が入力された
+			if (num == "0") {         // ０を入力値に置き換える　ｰ>　最初が０の時に数字を入力して「01」のようにならないようにするため
+				num = ""+btn;
+			} else {                  // 0があっても他の文字列が入っているときはそのまま処理　-> １０などは換算しない
+				num += ""+btn;
+			}
+		} else {　　　　　　　　　　　// 記号入力後に数字が入力された
+			num = ""+btn;
+		}
+		document.calc.output.value = num;
+	} else {　　　　　　　　　　　　// 記号の処理
+		if (!isNaN(key)) {　　　　　
+			if (kigou == "") {　　　　　
+        ans = num;
+      } else {
+        ans = eval(ans + kigou + num);
+      }
+			num = "0";
+			document.calc.output.value = ans;
+		}
+		kigou = btn;
+	}
+	document.getElementById("type").innerHTML = kigou;
+	key = btn;
+}
+
+function calc_period() {      //-- 少数点の処理関数
+	if (num.indexOf(".") < 0) {  // numに「.」が含まれているか判定 
+    num = ""+num+".";
+  }
+	key = 0;
+	document.calc.output.value = num;
+}
+
+function calc_clear() {      //-- クリア処理関数
+  ans = 0;
+  key = "";
+  num = "0";
+  document.getElementById("type").innerHTML = " ";
+  document.calc.output.value = ans;
+}
+</script>
+
+<h2>
+  <center>
+    <form name="calc">
+      <table  border="0" cellspacing="0" cellpadding="0">
+        <tr>
+          <td colspan="3"><input style="text-align:right; width:160px; height:75px; font-size:50px" type="text" name="output" value="0"></td>
+          <td><input style="font-size:50pt" type="button" value="c" onClick="calc_clear()"></td>
+          <div id="type"></div>
+        </tr>
+        <tr>
+          <td><input style="font-size:50pt" type="button" value="7" onClick="calc_run(7)"></td>
+          <td><input style="font-size:50pt" type="button" value="8" onClick="calc_run(8)"></td>
+          <td><input style="font-size:50pt" type="button" value="9" onClick="calc_run(9)"></td>
+          <td><input style="font-size:50pt" type="button" value="÷" onClick="calc_run('/')"></td>
+        </tr>
+         <tr> 
+          <td><input style="font-size:50pt" type="button" value="4" onClick="calc_run(4)"></td>
+          <td><input style="font-size:50pt" type="button" value="5" onClick="calc_run(5)"></td>
+          <td><input style="font-size:50pt" type="button" value="6" onClick="calc_run(6)"></td>
+          <td><input style="font-size:50pt" type="button" value="×" onClick="calc_run('*')"></td>
+        </tr>
+        <tr> 
+          <td><input style="font-size:50pt" type="button" value="1" onClick="calc_run(1)"></td>
+          <td><input style="font-size:50pt" type="button" value="2" onClick="calc_run(2)"></td>
+          <td><input style="font-size:50pt" type="button" value="3" onClick="calc_run(3)"></td>
+          <td><input style="font-size:50pt" type="button" value="−" onClick="calc_run('-')"></td>
+        </tr>
+        <tr>  
+          <td><input style="font-size:50pt" type="button" value="0" onClick="calc_run(0)"></td>
+          <td><input style="font-size:50pt" type="button" value="・" onClick="calc_period('.')"></td>
+          <td><input style="font-size:50pt" type="button" value="=" onClick="calc_run('=')"></td>
+          <td><input style="font-size:50pt" type="button" value="+" onClick="calc_run('+')"></td>
+        </tr>
+      </table>
+    </form>
+  </center>
+</h2>
